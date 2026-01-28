@@ -3,202 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج مدرسة الحصايا الثانوية المشتركة</title>
+    <title>مدرسة الحصايا الثانوية المشتركة - النتائج</title>
     <style>
-        /* الألوان والتصميم (CSS) */
         :root {
-            --beige-bg: #fdf5e6;
-            --orange-main: #e67e22;
-            --orange-dark: #d35400;
-            --text-color: #444;
+            --primary-orange: #e67e22;
+            --soft-beige: #fdf5e6;
+            --dark-text: #5d4037;
         }
 
         body {
-            background-color: var(--beige-bg);
+            background-color: var(--soft-beige);
+            background-image: url('https://www.transparenttextures.com/patterns/notebook.png'); /* تأثير ورق الكشكول */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--text-color);
+            color: var(--dark-text);
         }
 
-        /* خلفية فنية بسيطة */
-        .bg-pattern {
+        /* رسومات تعليمية في الخلفية */
+        body::before {
+            content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
             background: 
-                radial-gradient(circle at 10% 20%, rgba(230, 126, 34, 0.07) 0%, transparent 30%),
-                radial-gradient(circle at 90% 80%, rgba(230, 126, 34, 0.07) 0%, transparent 30%);
+                url('https://img.icons8.com/ios/100/e67e22/microscope.png') no-repeat 5% 10%,
+                url('https://img.icons8.com/ios/100/e67e22/test-tube.png') no-repeat 90% 15%,
+                url('https://img.icons8.com/ios/100/e67e22/math.png') no-repeat 10% 85%,
+                url('https://img.icons8.com/ios/100/e67e22/book.png') no-repeat 85% 90%;
+            opacity: 0.1;
+            z-index: -1;
         }
 
         .container {
-            width: 95%;
-            max-width: 500px;
+            width: 90%;
+            max-width: 800px;
             text-align: center;
+            padding: 20px;
         }
 
-        header h1 {
-            color: var(--orange-main);
-            margin-bottom: 5px;
-            font-size: 1.8rem;
+        .main-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 2px dashed var(--primary-orange);
         }
 
-        header p {
-            margin-bottom: 30px;
-            color: #777;
-        }
+        h1 { color: var(--primary-orange); font-size: 2rem; margin-bottom: 10px; }
 
-        .card {
-            background: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(230, 126, 34, 0.1);
-        }
+        .search-form { margin: 30px 0; }
 
         select, input {
-            width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #eee;
+            margin: 5px;
             border-radius: 12px;
-            box-sizing: border-box;
+            border: 2px solid #ddd;
             font-size: 16px;
+            width: 200px;
             outline: none;
-            transition: 0.3s;
-        }
-
-        select:focus, input:focus {
-            border-color: var(--orange-main);
         }
 
         button {
-            width: 100%;
-            padding: 15px;
-            background: var(--orange-main);
+            padding: 12px 30px;
+            background: var(--primary-orange);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
             transition: 0.3s;
         }
 
-        button:hover {
-            background: var(--orange-dark);
-            transform: translateY(-2px);
-        }
+        button:hover { background: #d35400; transform: scale(1.05); }
 
-        .result-box {
-            margin-top: 25px;
-            padding: 20px;
-            background: #fff;
+        /* ستايل الجدول */
+        .result-table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background: white;
             border-radius: 15px;
+            overflow: hidden;
             display: none;
-            border-right: 6px solid var(--orange-main);
-            text-align: right;
-            animation: fadeIn 0.5s ease;
+            animation: slideUp 0.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .loader {
-            display: none;
-            margin: 20px auto;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--orange-main);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-        }
+        .result-table th { background: var(--primary-orange); color: white; padding: 15px; }
+        .result-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+        .result-table tr:nth-child(even) { background: #fffbf0; }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .status-pass { color: green; font-weight: bold; }
+        .loader { display: none; color: var(--primary-orange); margin: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-pattern"></div>
+<div class="container">
+    <div class="main-card">
+        <h1>مدرسة الحصايا الثانوية المشتركة</h1>
+        <p>بوابة النتائج الرسمية - عام 2026</p>
 
-    <div class="container">
-        <header>
-            <h1>مدرسة الحصايا الثانوية المشتركة</h1>
-            <p>نظام الاستعلام الإلكتروني عن النتائج</p>
-        </header>
-
-        <div class="card">
+        <div class="search-form">
             <select id="grade">
                 <option value="1">الصف الأول الثانوي</option>
                 <option value="2">الصف الثاني الثانوي</option>
             </select>
             <input type="number" id="seatNo" placeholder="أدخل رقم الجلوس">
-            <button onclick="getStudentResult()">عرض النتيجة الآن</button>
-            <div id="loader" class="loader"></div>
+            <button onclick="searchResult()">ابحث عن النتيجة</button>
         </div>
 
-        <div id="result" class="result-box"></div>
+        <div id="loader" class="loader">جاري جلب البيانات من الكنترول...</div>
+
+        <div id="studentInfo" style="margin-top:20px; font-weight:bold; color:var(--primary-orange);"></div>
+        
+        <table id="resultTable" class="result-table">
+            <thead>
+                <tr>
+                    <th>المادة</th>
+                    <th>الدرجة</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
+</div>
 
-    <script>
-        // الروابط اللي بعتيها
-        const LINKS = {
-            "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
-            "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
-        };
+<script>
+    const LINKS = {
+        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
+        "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
+    };
 
-        async function getStudentResult() {
-            const grade = document.getElementById('grade').value;
-            const seatNo = document.getElementById('seatNo').value;
-            const resultBox = document.getElementById('result');
-            const loader = document.getElementById('loader');
+    async function searchResult() {
+        const grade = document.getElementById('grade').value;
+        const seatNo = document.getElementById('seatNo').value;
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('resultTable');
+        const tableBody = document.getElementById('tableBody');
+        const studentInfo = document.getElementById('studentInfo');
 
-            if (!seatNo) {
-                alert("يا بطل، اكتب رقم الجلوس الأول!");
-                return;
-            }
+        if (!seatNo) { alert("من فضلك أدخل رقم الجلوس"); return; }
 
-            resultBox.style.display = 'none';
-            loader.style.display = 'block';
+        loader.style.display = 'block';
+        table.style.display = 'none';
+        studentInfo.innerHTML = "";
 
-            try {
-                const response = await fetch(LINKS[grade]);
-                const csvData = await response.text();
+        try {
+            const response = await fetch(LINKS[grade]);
+            const text = await response.text();
+            const rows = text.split('\n').map(r => r.split(','));
+            
+            // العثور على الطالب
+            const student = rows.find(r => r[0].trim() === seatNo.trim());
+
+            loader.style.display = 'none';
+
+            if (student) {
+                studentInfo.innerHTML = "اسم الطالب: " + student[1] + " | الحالة: ناجح ✨";
                 
-                // تحويل البيانات من نص CSV إلى مصفوفة
-                const rows = csvData.split('\n').map(row => row.split(','));
+                // تفريغ الجدول القديم
+                tableBody.innerHTML = "";
                 
-                // البحث (رقم الجلوس في العمود الأول)
-                const student = rows.find(r => r[0].trim() === seatNo.trim());
+                // المواد (بافتراض ترتيب معين في الملف، يمكنك تعديل العناوين هنا)
+                const subjects = ["اللغة العربية", "اللغة الإنجليزية", "اللغة الثانية", "الرياضيات", "الفيزياء", "الكيمياء", "الأحياء", "المجموع"];
+                
+                subjects.forEach((sub, index) => {
+                    let row = `<tr><td>${sub}</td><td>${student[index+2] || '0'}</td></tr>`;
+                    tableBody.innerHTML += row;
+                });
 
-                loader.style.display = 'none';
-
-                if (student) {
-                    resultBox.style.display = 'block';
-                    resultBox.innerHTML = `
-                        <h3 style="color:var(--orange-dark); margin-top:0;">🎉 ألف مبروك النجاح</h3>
-                        <p><b>الاسم:</b> ${student[1] || 'غير متوفر'}</p>
-                        <p><b>رقم الجلوس:</b> ${student[0]}</p>
-                        <hr style="border:0; border-top:1px solid #eee;">
-                        <p style="font-size:1.2rem;"><b>المجموع الكلي:</b> <span style="color:var(--orange-main)">${student[student.length - 1]}</span></p>
-                        <button onclick="window.print()" style="font-size:14px; padding:8px; background:#777;">طباعة النتيجة</button>
-                    `;
-                } else {
-                    alert("رقم الجلوس ده مش موجود في كشوف سنة " + (grade == "1" ? "أولى" : "تانية"));
-                }
-            } catch (error) {
-                loader.style.display = 'none';
-                alert("حصل مشكلة في التحميل، تأكد إن النت شغال!");
-                console.error(error);
+                table.style.display = 'table';
+            } else {
+                alert("رقم الجلوس غير موجود");
             }
+        } catch (e) {
+            loader.style.display = 'none';
+            alert("خطأ في الاتصال بالخادم");
         }
-    </script>
+    }
+</script>
+
 </body>
-</html>
+    </html>
