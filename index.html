@@ -3,123 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدرسة الحصايا الثانوية - النتائج</title>
+    <title>بوابة مدرسة الحصايا الثانوية</title>
     <style>
-        :root {
-            --primary: #d37d3d;
-            --secondary: #8d6e63;
-            --bg: #f4eee1;
-            --white: rgba(255, 255, 255, 0.96);
-        }
-
+        /* إضافة خلفية مليانة رسومات تعليمية */
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg);
-            /* إضافة رسومات تعليمية خفيفة في الخلفية */
-            background-image: url('https://www.transparenttextures.com/patterns/skulls.png'), 
-                              radial-gradient(circle at top right, rgba(211, 125, 61, 0.1), transparent),
-                              radial-gradient(circle at bottom left, rgba(211, 125, 61, 0.1), transparent);
+            font-family: 'Cairo', 'Segoe UI', sans-serif;
+            background-color: #f4eee1;
+            /* رسومات "باترن" تعليمية خفيفة */
+            background-image: url('https://www.transparenttextures.com/patterns/school-paper.png');
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* حركات الأيقونات العائمة في الخلفية */
-        .floating-icons { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
-        .icon { position: absolute; font-size: 2rem; opacity: 0.1; animation: float 10s infinite linear; }
-        @keyframes float { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(-100vh) rotate(360deg); } }
+        /* حركات برتقالية عائمة في الخلفية */
+        body::before {
+            content: "";
+            position: absolute; width: 300px; height: 300px;
+            background: rgba(211, 125, 61, 0.1);
+            filter: blur(80px); border-radius: 50%;
+            top: -50px; left: -50px; animation: move 10s infinite alternate;
+        }
+
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
 
         .main-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px;
-            border-radius: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
-            width: 90%; max-width: 520px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            width: 90%; max-width: 500px;
             text-align: center;
-            border: 2px solid #e2d9c5;
+            border: 5px solid #fff;
             position: relative;
-            animation: slideIn 1s ease-out;
+            z-index: 10;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        @keyframes slideIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        .logo-area { font-size: 3rem; margin-bottom: 10px; }
-        h1 { color: #5d4037; font-size: 1.8rem; margin: 0; }
-        .subtitle { color: var(--primary); font-weight: bold; margin-bottom: 30px; letter-spacing: 1px; }
+        .school-title { color: #5d4037; font-size: 1.8rem; font-weight: 900; margin: 0; }
+        .badge { background: #d37d3d; color: white; padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; display: inline-block; margin: 10px 0 25px; }
 
-        .input-group { text-align: right; margin-bottom: 20px; animation: fadeIn 1.5s; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #8d6e63; padding-right: 5px; }
-
+        .search-box { background: #fffcf5; padding: 25px; border-radius: 25px; border: 1px solid #e2d9c5; }
+        
+        label { display: block; text-align: right; margin-bottom: 10px; font-weight: bold; color: #8d6e63; }
+        
         select, input {
-            width: 100%; padding: 16px; border: 2px solid #e2d9c5; border-radius: 18px;
-            font-size: 16px; outline: none; transition: 0.3s; background: #fffcf9;
+            width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #d1c4b2;
+            border-radius: 15px; font-size: 16px; outline: none; transition: 0.3s;
         }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(211, 125, 61, 0.2); }
+        input:focus { border-color: #d37d3d; background: #fff; }
 
         .btn-search {
-            width: 100%; padding: 18px; background: var(--primary); color: white; border: none;
-            border-radius: 18px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            transition: 0.4s; margin-top: 10px; box-shadow: 0 10px 20px rgba(211, 125, 61, 0.3);
+            width: 100%; padding: 18px; background: #d37d3d; color: white; border: none;
+            border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(211, 125, 61, 0.3); transition: 0.3s;
         }
-        .btn-search:hover { transform: scale(1.02); background: #b96a32; box-shadow: 0 15px 30px rgba(211, 125, 61, 0.4); }
+        .btn-search:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(211, 125, 61, 0.4); }
 
-        /* جدول النتائج المتحرك */
-        #resultView { display: none; margin-top: 30px; animation: zoomIn 0.5s ease; }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        /* النتيجة */
+        #resultView { display: none; margin-top: 30px; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .st-card {
-            background: #fdfaf3; padding: 20px; border-radius: 20px;
-            border-right: 6px solid var(--primary); margin-bottom: 20px; text-align: right;
-        }
+        .student-info { background: #fdfaf3; padding: 15px; border-radius: 15px; border-right: 6px solid #d37d3d; text-align: right; margin-bottom: 15px; }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        td { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-        .sub-name { font-weight: bold; color: #5d4037; text-align: right; }
-        .score { color: var(--primary); font-weight: 900; text-align: left; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        td { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .sub { font-weight: bold; text-align: right; color: #5d4037; }
+        .val { color: #d37d3d; font-weight: 900; text-align: left; }
 
-        .loading-spinner { display: none; margin: 20px auto; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="floating-icons">
-    <div class="icon" style="left: 10%; animation-delay: 0s;">📚</div>
-    <div class="icon" style="left: 30%; animation-delay: 2s;">🧪</div>
-    <div class="icon" style="left: 50%; animation-delay: 4s;">📖</div>
-    <div class="icon" style="left: 70%; animation-delay: 1s;">🎓</div>
-    <div class="icon" style="left: 90%; animation-delay: 3s;">✏️</div>
-</div>
-
 <div class="main-card">
-    <div class="logo-area">🏫</div>
-    <h1>مدرسة الحصايا الثانوية المشتركة</h1>
-    <div class="subtitle">نظام النتائج الذكي 2026</div>
+    <div style="font-size: 40px;">🎓</div>
+    <h1 class="school-title">مدرسة الحصايا الثانوية</h1>
+    <span class="badge">نظام النتائج الإلكتروني 2026</span>
 
-    <div class="input-group">
-        <label>اختر المرحلة الدراسية:</label>
+    <div class="search-box">
+        <label>الصف الدراسي:</label>
         <select id="grade">
             <option value="1">الصف الأول الثانوي</option>
             <option value="2">الصف الثاني الثانوي</option>
         </select>
-    </div>
 
-    <div class="input-group">
         <label>رقم الجلوس:</label>
-        <input type="number" id="seatNo" placeholder="ادخل رقم جلوسك هنا...">
+        <input type="number" id="seatNo" placeholder="اكتب رقم الجلوس هنا...">
+        
+        <button class="btn-search" onclick="fetchResult()">إظهار النتيجة ✨</button>
     </div>
-
-    <button class="btn-search" onclick="getStudentResult()">استعلام عن النتيجة ✨</button>
-    <div id="loader" class="loading-spinner"></div>
 
     <div id="resultView">
-        <div class="st-card">
-            <div id="resName" style="font-size: 1.2rem; color: #3e2723;"></div>
-            <div style="font-size: 0.9rem; color: #8d6e63;">طالب متميز - مدرسة الحصايا</div>
-        </div>
+        <div class="student-info" id="studentName"></div>
         <table>
-            <tbody id="resBody"></tbody>
+            <tbody id="resultTable"></tbody>
         </table>
     </div>
 </div>
@@ -130,31 +111,33 @@
         "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
     };
 
-    async function getStudentResult() {
+    async function fetchResult() {
         const grade = document.getElementById('grade').value;
         const seat = document.getElementById('seatNo').value.trim();
-        if(!seat) { alert("اكتب رقم الجلوس يا بطل!"); return; }
-
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('resultView').style.display = 'none';
+        if(!seat) { alert("من فضلك ادخل رقم الجلوس"); return; }
 
         try {
-            const res = await fetch(links[grade]);
-            const text = await res.text();
-            const rows = text.split('\n').map(r => r.split(','));
+            const r = await fetch(links[grade]);
+            const t = await r.text();
+            const rows = t.split('\n').map(row => row.split(','));
             const headers = rows[0];
-            const student = rows.find(r => r[0].trim() === seat);
+            const data = rows.find(row => row[0].trim() === seat);
 
-            if(student) {
-                document.getElementById('resName').innerText = "الاسم: " + student[1];
-                const body = document.getElementById('resBody');
-                body.innerHTML = "";
-                for(let i=2; i < headers.length; i++) {
+            if(data) {
+                document.getElementById('studentName').innerText = "الاسم: " + data[1];
+                const table = document.getElementById('resultTable');
+                table.innerHTML = "";
+                for(let i=2; i<headers.length; i++) {
                     if(!headers[i] || headers[i].trim() === "") continue;
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td class="sub-name">${headers[i]}</td><td class="score">${student[i]}</td>`;
-                    body.appendChild(tr);
+                    table.innerHTML += `<tr><td class="sub">${headers[i]}</td><td class="val">${data[i]}</td></tr>`;
                 }
                 document.getElementById('resultView').style.display = 'block';
             } else {
-                alert("رقم الجلوس غير موجود.. تأكد من الرقم
+                alert("الرقم ده مش موجود!");
+            }
+        } catch(e) { alert("مشكلة في التحميل!"); }
+    }
+</script>
+
+</body>
+</html>
