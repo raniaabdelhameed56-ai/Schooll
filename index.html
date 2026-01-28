@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج مدرسة الحصايا الثانوية</title>
+    <style>
+        :root {
+            --primary-orange: #ff7e5f;
+            --dark-orange: #e66a4e;
+            --beige-bg: #fdf5e6;
+            --card-white: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--beige-bg);
+            background-image: linear-gradient(135deg, #fdf5e6 0%, #ffedda 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #444;
+        }
+
+        .main-container {
+            background: var(--card-white);
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(230, 106, 78, 0.15);
+            border: 2px solid #fff;
+            text-align: center;
+        }
+
+        .header-section { margin-bottom: 30px; }
+        .header-section h2 { color: var(--dark-orange); font-size: 1.4rem; margin: 0; }
+        .header-section h1 { font-size: 2rem; color: #2d3436; margin: 10px 0; }
+
+        .form-group { text-align: right; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+
+        select, input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        select:focus, input:focus { border-color: var(--primary-orange); }
+
+        .btn-search {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary-orange), var(--dark-orange));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-search:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(255, 126, 95, 0.4); }
+
+        /* تنسيق الجدول */
+        #resultArea { display: none; margin-top: 30px; animation: fadeInUp 0.5s ease; }
+        .student-info { 
+            background: #fff8ef; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border-right: 6px solid var(--primary-orange);
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+        th { background: var(--primary-orange); color: white; padding: 15px; }
+        td { padding: 12px; border: 1px solid #f9f9f9; text-align: center; }
+        tr:nth-child(even) { background: #fffcf9; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loader { display: none; margin: 20px auto; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-orange); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header-section">
+        <h2>مدرسة الحصايا الثانوية المشتركة</h2>
+        <h1>نتائج الطلاب 🎓</h1>
+    </div>
+
+    <div class="form-group">
+        <label>اختر الصف الدراسي:</label>
+        <select id="grade">
+            <option value="1">الصف الأول الثانوي</option>
+            <option value="2">الصف الثاني الثانوي</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>رقم الجلوس:</label>
+        <input type="text" id="seatNumber" placeholder="أدخل رقم الجلوس...">
+    </div>
+
+    <button class="btn-search" onclick="getResults()">عرض النتيجة</button>
+
+    <div id="loader" class="loader"></div>
+
+    <div id="resultArea">
+        <div class="student-info">
+            <div id="resName" style="font-weight: bold; font-size: 1.2rem;"></div>
+            <div id="resGrade"></div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>المادة</th>
+                    <th>الدرجة</th>
+                </tr>
+            </thead>
+            <tbody id="resTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // الروابط
+    const sheetLinks = {
+        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyPb3Mc0FJmGcWONu5zLtN2Sb8a9etmmydAUc4qJT8-4KW1kb0g2HUJ8wRLdI40-921ajLZcoGR-VX/pub?output=csv",
+        "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
+    };
+
+    async function getResults() {
+        const grade = document.getElementById('grade').value;
+        const seatNo = document.getElementById('seatNumber').value.trim();
+        const url = sheetLinks[grade];
+
+        if(!seatNo) { alert("من فضلك اكتب رقم الجلوس"); return; }
+
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('resultArea').style.display = 'none';
+
+        try {
+            const response = await fetch(url);
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split(','));
+            const headers = rows[0];
+            
+            // البحث عن الطالب (رقم الجلوس في أول عمود)
+            const student = rows.find(r => r[0].trim() === seatNo);
+
+            if(student) {
+                renderTable(headers, student, grade);
+            } else {
+                alert("رقم الجلوس غير صحيح أو غير موجود");
+            }
+        } catch (e) {
+            alert("حدث خطأ في تحميل البيانات");
+        }
+        document.getElementById('loader').style.display = 'none';
+    }
+
+    function renderTable(headers, student, g) {
+        document.getElementById('resName').innerText = "الاسم: " + student[1];
+        document.getElementById('resGrade').innerText = (g == "1" ? "الصف الأول الثانوي" : "الصف الثاني الثانوي");
+        
+        const tableBody = document.getElementById('resTable');
+        tableBody.innerHTML = "";
+
+        for(let i=2; i<headers.length; i++) {
+            if(!headers[i] || headers[i].trim() === "") continue;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${headers[i]}</td><td><strong>${student[i]}</strong></td>`;
+            tableBody.appendChild(tr);
+        }
+        document.getElementById('resultArea').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
