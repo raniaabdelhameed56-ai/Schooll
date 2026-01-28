@@ -3,190 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدرسة الحصايا الثانوية المشتركة - النتائج</title>
+    <title>بوابة نتائج مدرسة الحصايا الثانوية</title>
     <style>
         :root {
-            --primary-orange: #e67e22;
-            --soft-beige: #fdf5e6;
-            --dark-text: #5d4037;
+            --primary-orange: #d37d3d;
+            --soft-beige: #f4eee1;
+            --white-glass: rgba(255, 255, 255, 0.9);
         }
 
         body {
-            background-color: var(--soft-beige);
-            background-image: url('https://www.transparenttextures.com/patterns/notebook.png'); /* تأثير ورق الكشكول */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-beige);
+            /* إضافة تموجات خلفية مثل الصورة */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(211, 125, 61, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(211, 125, 61, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            color: var(--dark-text);
         }
 
-        /* رسومات تعليمية في الخلفية */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                url('https://img.icons8.com/ios/100/e67e22/microscope.png') no-repeat 5% 10%,
-                url('https://img.icons8.com/ios/100/e67e22/test-tube.png') no-repeat 90% 15%,
-                url('https://img.icons8.com/ios/100/e67e22/math.png') no-repeat 10% 85%,
-                url('https://img.icons8.com/ios/100/e67e22/book.png') no-repeat 85% 90%;
-            opacity: 0.1;
-            z-index: -1;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 800px;
-            text-align: center;
-            padding: 20px;
-        }
-
+        /* حاوية التصميم الرئيسية */
         .main-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--white-glass);
+            border: 2px solid #e2d9c5;
+            border-radius: 25px;
             padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border: 2px dashed var(--primary-orange);
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
         }
 
-        h1 { color: var(--primary-orange); font-size: 2rem; margin-bottom: 10px; }
+        .school-header {
+            color: #5d4037;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-        .search-form { margin: 30px 0; }
+        .year-label {
+            color: var(--primary-orange);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .search-area {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #eee;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8d6e63;
+            font-weight: bold;
+        }
 
         select, input {
-            padding: 12px;
-            margin: 5px;
-            border-radius: 12px;
-            border: 2px solid #ddd;
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid #d1c4b2;
+            border-radius: 10px;
             font-size: 16px;
-            width: 200px;
             outline: none;
+            box-sizing: border-box;
+            background-color: #fafafa;
         }
 
-        button {
-            padding: 12px 30px;
-            background: var(--primary-orange);
+        .btn-search {
+            background-color: var(--primary-orange);
             color: white;
             border: none;
+            padding: 15px 40px;
             border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(211, 125, 61, 0.3);
         }
 
-        button:hover { background: #d35400; transform: scale(1.05); }
+        .btn-search:hover {
+            background-color: #b96a32;
+            transform: translateY(-2px);
+        }
 
-        /* ستايل الجدول */
-        .result-table {
-            width: 100%;
+        /* جدول النتائج */
+        #resultView {
+            display: none;
             margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .student-header {
+            background: #fdfaf3;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-right: 5px solid var(--primary-orange);
+            text-align: right;
+        }
+
+        table {
+            width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            display: none;
-            animation: slideUp 0.5s ease;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        th { background: #efebe9; padding: 12px; color: #5d4037; }
+        td { padding: 12px; border-bottom: 1px solid #f5f5f5; text-align: center; }
 
-        .result-table th { background: var(--primary-orange); color: white; padding: 15px; }
-        .result-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
-        .result-table tr:nth-child(even) { background: #fffbf0; }
-
-        .status-pass { color: green; font-weight: bold; }
-        .loader { display: none; color: var(--primary-orange); margin: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="main-card">
-        <h1>مدرسة الحصايا الثانوية المشتركة</h1>
-        <p>بوابة النتائج الرسمية - عام 2026</p>
+<div class="main-card">
+    <div class="school-header">مدرسة الحصايا الثانوية المشتركة</div>
+    <div class="year-label">نتائج امتحانات العام الدراسي 2026</div>
 
-        <div class="search-form">
+    <div class="search-area">
+        <div class="input-group">
+            <label>السنة الدراسية</label>
             <select id="grade">
                 <option value="1">الصف الأول الثانوي</option>
                 <option value="2">الصف الثاني الثانوي</option>
             </select>
-            <input type="number" id="seatNo" placeholder="أدخل رقم الجلوس">
-            <button onclick="searchResult()">ابحث عن النتيجة</button>
         </div>
+        <div class="input-group">
+            <label>رقم الجلوس</label>
+            <input type="text" id="seatNo" placeholder="ادخل رقم جلوس الطالب">
+        </div>
+        <button class="btn-search" onclick="loadResult()">عرض النتيجة</button>
+    </div>
 
-        <div id="loader" class="loader">جاري جلب البيانات من الكنترول...</div>
-
-        <div id="studentInfo" style="margin-top:20px; font-weight:bold; color:var(--primary-orange);"></div>
-        
-        <table id="resultTable" class="result-table">
-            <thead>
-                <tr>
-                    <th>المادة</th>
-                    <th>الدرجة</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
+    <div id="resultView">
+        <div class="student-header">
+            <div id="stName" style="font-weight: bold; font-size: 1.1rem; color: #3e2723;"></div>
+        </div>
+        <table>
+            <tbody id="stTable"></tbody>
         </table>
     </div>
 </div>
 
 <script>
-    const LINKS = {
-        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
+    // الروابط الصحيحة التي أرسلتها
+    const sources = {
+        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyPb3Mc0FJmGcWONu5zLtN2Sb8a9etmmydAUc4qJT8-4KW1kb0g2HUJ8wRLdI40-921ajLZcoGR-VX/pub?output=csv",
         "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
     };
 
-    async function searchResult() {
+    async function loadResult() {
         const grade = document.getElementById('grade').value;
-        const seatNo = document.getElementById('seatNo').value;
-        const loader = document.getElementById('loader');
-        const table = document.getElementById('resultTable');
-        const tableBody = document.getElementById('tableBody');
-        const studentInfo = document.getElementById('studentInfo');
-
-        if (!seatNo) { alert("من فضلك أدخل رقم الجلوس"); return; }
-
-        loader.style.display = 'block';
-        table.style.display = 'none';
-        studentInfo.innerHTML = "";
+        const seatInput = document.getElementById('seatNo').value.trim();
+        
+        if(!seatInput) { alert("يرجى إدخال رقم الجلوس"); return; }
 
         try {
-            const response = await fetch(LINKS[grade]);
-            const text = await response.text();
-            const rows = text.split('\n').map(r => r.split(','));
-            
-            // العثور على الطالب
-            const student = rows.find(r => r[0].trim() === seatNo.trim());
+            const resp = await fetch(sources[grade]);
+            const csv = await resp.text();
+            const rows = csv.split('\n').map(r => r.split(','));
+            const headers = rows[0];
+            const student = rows.find(r => r[0].trim() === seatInput);
 
-            loader.style.display = 'none';
-
-            if (student) {
-                studentInfo.innerHTML = "اسم الطالب: " + student[1] + " | الحالة: ناجح ✨";
-                
-                // تفريغ الجدول القديم
-                tableBody.innerHTML = "";
-                
-                // المواد (بافتراض ترتيب معين في الملف، يمكنك تعديل العناوين هنا)
-                const subjects = ["اللغة العربية", "اللغة الإنجليزية", "اللغة الثانية", "الرياضيات", "الفيزياء", "الكيمياء", "الأحياء", "المجموع"];
-                
-                subjects.forEach((sub, index) => {
-                    let row = `<tr><td>${sub}</td><td>${student[index+2] || '0'}</td></tr>`;
-                    tableBody.innerHTML += row;
-                });
-
-                table.style.display = 'table';
-            } else {
-                alert("رقم الجلوس غير موجود");
-            }
-        } catch (e) {
-            loader.style.display = 'none';
-            alert("خطأ في الاتصال بالخادم");
-        }
-    }
-</script>
-
-</body>
-    </html>
+            if(student) {
+                document.getElementById('stName').innerText = "الاسم: " + student[1];
+                const tableBody = document.getElementById('stTable');
+                tableBody.innerHTML
