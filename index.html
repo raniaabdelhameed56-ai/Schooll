@@ -3,96 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة نتائج مدرسة الحصايا الثانوية</title>
+    <title>مدرسة الحصايا الثانوية - النتائج</title>
     <style>
         :root {
-            --primary: #d37d3d; /* البرتقالي اللي في الصورة */
-            --bg-color: #f4eee1; /* البيج الهادئ */
-            --white: rgba(255, 255, 255, 0.95);
+            --primary: #d37d3d;
+            --secondary: #8d6e63;
+            --bg: #f4eee1;
+            --white: rgba(255, 255, 255, 0.96);
         }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 20% 20%, rgba(211, 125, 61, 0.05) 0%, transparent 50%);
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            /* إضافة رسومات تعليمية خفيفة في الخلفية */
+            background-image: url('https://www.transparenttextures.com/patterns/skulls.png'), 
+                              radial-gradient(circle at top right, rgba(211, 125, 61, 0.1), transparent),
+                              radial-gradient(circle at bottom left, rgba(211, 125, 61, 0.1), transparent);
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
+            overflow-x: hidden;
         }
+
+        /* حركات الأيقونات العائمة في الخلفية */
+        .floating-icons { position: absolute; width: 100%; height: 100%; overflow: hidden; z-index: -1; pointer-events: none; }
+        .icon { position: absolute; font-size: 2rem; opacity: 0.1; animation: float 10s infinite linear; }
+        @keyframes float { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(-100vh) rotate(360deg); } }
 
         .main-card {
             background: var(--white);
             padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            width: 90%;
-            max-width: 500px;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            width: 90%; max-width: 520px;
             text-align: center;
-            border: 1px solid #e2d9c5;
+            border: 2px solid #e2d9c5;
+            position: relative;
+            animation: slideIn 1s ease-out;
         }
 
-        h1 { color: #5d4037; font-size: 1.8rem; margin-bottom: 5px; }
-        p.subtitle { color: var(--primary); font-weight: bold; margin-bottom: 30px; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
 
-        .input-group { text-align: right; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #8d6e63; }
+        .logo-area { font-size: 3rem; margin-bottom: 10px; }
+        h1 { color: #5d4037; font-size: 1.8rem; margin: 0; }
+        .subtitle { color: var(--primary); font-weight: bold; margin-bottom: 30px; letter-spacing: 1px; }
+
+        .input-group { text-align: right; margin-bottom: 20px; animation: fadeIn 1.5s; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #8d6e63; padding-right: 5px; }
 
         select, input {
-            width: 100%;
-            padding: 14px;
-            border: 1.5px solid #d1c4b2;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            box-sizing: border-box;
-            background: #fffcf9;
+            width: 100%; padding: 16px; border: 2px solid #e2d9c5; border-radius: 18px;
+            font-size: 16px; outline: none; transition: 0.3s; background: #fffcf9;
         }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(211, 125, 61, 0.2); }
 
         .btn-search {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(211, 125, 61, 0.2);
+            width: 100%; padding: 18px; background: var(--primary); color: white; border: none;
+            border-radius: 18px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            transition: 0.4s; margin-top: 10px; box-shadow: 0 10px 20px rgba(211, 125, 61, 0.3);
+        }
+        .btn-search:hover { transform: scale(1.02); background: #b96a32; box-shadow: 0 15px 30px rgba(211, 125, 61, 0.4); }
+
+        /* جدول النتائج المتحرك */
+        #resultView { display: none; margin-top: 30px; animation: zoomIn 0.5s ease; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        .st-card {
+            background: #fdfaf3; padding: 20px; border-radius: 20px;
+            border-right: 6px solid var(--primary); margin-bottom: 20px; text-align: right;
         }
 
-        .btn-search:hover { background-color: #b96a32; transform: translateY(-2px); }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        td { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .sub-name { font-weight: bold; color: #5d4037; text-align: right; }
+        .score { color: var(--primary); font-weight: 900; text-align: left; }
 
-        /* منطقة النتيجة */
-        #resultView { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
-        .student-name-card {
-            background: #fdfaf3;
-            padding: 15px;
-            border-radius: 12px;
-            border-right: 5px solid var(--primary);
-            margin-bottom: 15px;
-            text-align: right;
-            font-weight: bold;
-            color: #3e2723;
-        }
-
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
-        td { padding: 12px; border-bottom: 1px solid #f5f5f5; text-align: center; }
-        .subject-name { text-align: right; font-weight: 600; color: #5d4037; }
-        .score { color: var(--primary); font-weight: bold; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .loading-spinner { display: none; margin: 20px auto; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+<div class="floating-icons">
+    <div class="icon" style="left: 10%; animation-delay: 0s;">📚</div>
+    <div class="icon" style="left: 30%; animation-delay: 2s;">🧪</div>
+    <div class="icon" style="left: 50%; animation-delay: 4s;">📖</div>
+    <div class="icon" style="left: 70%; animation-delay: 1s;">🎓</div>
+    <div class="icon" style="left: 90%; animation-delay: 3s;">✏️</div>
+</div>
+
 <div class="main-card">
+    <div class="logo-area">🏫</div>
     <h1>مدرسة الحصايا الثانوية المشتركة</h1>
-    <p class="subtitle">بوابة نتائج الطلاب 2026</p>
+    <div class="subtitle">نظام النتائج الذكي 2026</div>
 
     <div class="input-group">
-        <label>اختر الصف:</label>
+        <label>اختر المرحلة الدراسية:</label>
         <select id="grade">
             <option value="1">الصف الأول الثانوي</option>
             <option value="2">الصف الثاني الثانوي</option>
@@ -101,67 +107,54 @@
 
     <div class="input-group">
         <label>رقم الجلوس:</label>
-        <input type="text" id="seatNo" placeholder="ادخل رقم الجلوس هنا...">
+        <input type="number" id="seatNo" placeholder="ادخل رقم جلوسك هنا...">
     </div>
 
-    <button class="btn-search" onclick="fetchStudentResult()">عرض النتيجة ✨</button>
+    <button class="btn-search" onclick="getStudentResult()">استعلام عن النتيجة ✨</button>
+    <div id="loader" class="loading-spinner"></div>
 
     <div id="resultView">
-        <div class="student-name-card" id="stName"></div>
+        <div class="st-card">
+            <div id="resName" style="font-size: 1.2rem; color: #3e2723;"></div>
+            <div style="font-size: 0.9rem; color: #8d6e63;">طالب متميز - مدرسة الحصايا</div>
+        </div>
         <table>
-            <tbody id="stTable"></tbody>
+            <tbody id="resBody"></tbody>
         </table>
     </div>
 </div>
 
 <script>
-    const apiUrls = {
+    const links = {
         "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
         "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
     };
 
-    async function fetchStudentResult() {
+    async function getStudentResult() {
         const grade = document.getElementById('grade').value;
-        const seatNo = document.getElementById('seatNo').value.trim();
-        
-        if(!seatNo) { alert("من فضلك اكتب رقم الجلوس"); return; }
+        const seat = document.getElementById('seatNo').value.trim();
+        if(!seat) { alert("اكتب رقم الجلوس يا بطل!"); return; }
+
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('resultView').style.display = 'none';
 
         try {
-            const response = await fetch(apiUrls[grade]);
-            const data = await response.text();
-            
-            // تحويل الـ CSV لمصفوفة بذكاء
-            const rows = data.split('\n').map(r => r.split(','));
+            const res = await fetch(links[grade]);
+            const text = await res.text();
+            const rows = text.split('\n').map(r => r.split(','));
             const headers = rows[0];
-            
-            // البحث عن الطالب في أول عمود
-            const student = rows.find(r => r[0].trim() === seatNo);
+            const student = rows.find(r => r[0].trim() === seat);
 
             if(student) {
-                document.getElementById('stName').innerText = "الاسم: " + student[1];
-                const tableBody = document.getElementById('stTable');
-                tableBody.innerHTML = "";
-
-                // إضافة المواد والدرجات أوتوماتيكياً
+                document.getElementById('resName').innerText = "الاسم: " + student[1];
+                const body = document.getElementById('resBody');
+                body.innerHTML = "";
                 for(let i=2; i < headers.length; i++) {
                     if(!headers[i] || headers[i].trim() === "") continue;
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="subject-name">${headers[i]}</td>
-                        <td class="score">${student[i]}</td>
-                    `;
-                    tableBody.appendChild(tr);
+                    tr.innerHTML = `<td class="sub-name">${headers[i]}</td><td class="score">${student[i]}</td>`;
+                    body.appendChild(tr);
                 }
                 document.getElementById('resultView').style.display = 'block';
             } else {
-                alert("رقم الجلوس غير موجود، تأكد من الرقم والسنة الدراسية.");
-                document.getElementById('resultView').style.display = 'none';
-            }
-        } catch(error) {
-            alert("حدث خطأ في جلب البيانات، يرجى المحاولة لاحقاً.");
-        }
-    }
-</script>
-
-</body>
-</html>
+                alert("رقم الجلوس غير موجود.. تأكد من الرقم
