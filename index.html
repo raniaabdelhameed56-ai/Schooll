@@ -3,184 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة نتائج مدرسة الحصايا</title>
+    <title>نتائج مدرسة الحصايا الثانوية المشتركة</title>
     <style>
-        /* تصميم فخم وألوان قوية */
+        /* الألوان والتصميم (CSS) */
         :root {
-            --primary-orange: #ff6a00; /* برتقالي قوي */
-            --dark-orange: #ee0979;   /* تدرج للأحمر */
-            --beige-light: #fff5e6;   /* بيج فاتح جداً */
-            --glass: rgba(255, 255, 255, 0.92);
+            --beige-bg: #fdf5e6;
+            --orange-main: #e67e22;
+            --orange-dark: #d35400;
+            --text-color: #444;
         }
 
         body {
+            background-color: var(--beige-bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); /* خلفية مبهجة */
-            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            color: var(--text-color);
+        }
+
+        /* خلفية فنية بسيطة */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(230, 126, 34, 0.07) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(230, 126, 34, 0.07) 0%, transparent 30%);
         }
 
         .container {
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
-            width: 90%;
+            width: 95%;
             max-width: 500px;
             text-align: center;
-            border: 4px solid #fff;
         }
 
-        .school-header {
-            background: linear-gradient(to right, var(--primary-orange), var(--dark-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 1.8rem;
-            font-weight: 900;
+        header h1 {
+            color: var(--orange-main);
             margin-bottom: 5px;
+            font-size: 1.8rem;
         }
 
-        h2 { color: #444; margin-bottom: 30px; font-size: 1.2rem; }
+        header p {
+            margin-bottom: 30px;
+            color: #777;
+        }
 
-        .search-card {
-            background: white;
+        .card {
+            background: #fff;
             padding: 25px;
-            border-radius: 25px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(230, 126, 34, 0.1);
         }
 
         select, input {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             margin: 10px 0;
             border: 2px solid #eee;
-            border-radius: 15px;
+            border-radius: 12px;
+            box-sizing: border-box;
             font-size: 16px;
-            text-align: center;
             outline: none;
             transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary-orange); box-shadow: 0 0 10px rgba(255,106,0,0.2); }
+        select:focus, input:focus {
+            border-color: var(--orange-main);
+        }
 
-        .btn-search {
+        button {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(to right, #ff6a00, #ee0979);
+            padding: 15px;
+            background: var(--orange-main);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 1.2rem;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
-            transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(238, 9, 121, 0.3);
+            margin-top: 10px;
+            transition: 0.3s;
         }
 
-        .btn-search:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(238, 9, 121, 0.4); }
+        button:hover {
+            background: var(--orange-dark);
+            transform: translateY(-2px);
+        }
 
-        /* منطقة النتيجة */
-        #resultView { display: none; margin-top: 30px; animation: fadeIn 0.6s; }
-        
-        .student-box {
-            background: var(--beige-light);
-            padding: 15px;
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff;
             border-radius: 15px;
-            margin-bottom: 20px;
-            border-bottom: 4px solid var(--primary-orange);
+            display: none;
+            border-right: 6px solid var(--orange-main);
+            text-align: right;
+            animation: fadeIn 0.5s ease;
         }
 
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 12px; border-bottom: 1px solid #eee; text-align: right; }
-        .subject { font-weight: bold; color: #555; }
-        .degree { color: var(--primary-orange); font-weight: 900; text-align: left; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loader {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--orange-main);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="school-header">مدرسة الحصايا الثانوية المشتركة</div>
-    <h2>نظام الاستعلام عن النتائج 🎓</h2>
+    <div class="bg-pattern"></div>
 
-    <div class="search-card">
-        <select id="grade">
-            <option value="1">الصف الأول الثانوي</option>
-            <option value="2" selected>الصف الثاني الثانوي</option>
-        </select>
-        <input type="number" id="seatNo" placeholder="أدخل رقم الجلوس هنا">
-        <button class="btn-search" onclick="getStudentResult()">كشف النتيجة ✨</button>
-    </div>
+    <div class="container">
+        <header>
+            <h1>مدرسة الحصايا الثانوية المشتركة</h1>
+            <p>نظام الاستعلام الإلكتروني عن النتائج</p>
+        </header>
 
-    <div id="resultView">
-        <div class="student-box">
-            <div id="studentName" style="font-size: 1.3rem; font-weight: bold; color: #333;"></div>
-            <div id="studentStatus" style="color: #888; font-size: 0.9rem; margin-top: 5px;"></div>
+        <div class="card">
+            <select id="grade">
+                <option value="1">الصف الأول الثانوي</option>
+                <option value="2">الصف الثاني الثانوي</option>
+            </select>
+            <input type="number" id="seatNo" placeholder="أدخل رقم الجلوس">
+            <button onclick="getStudentResult()">عرض النتيجة الآن</button>
+            <div id="loader" class="loader"></div>
         </div>
-        <table id="resultTable">
-            </table>
+
+        <div id="result" class="result-box"></div>
     </div>
-</div>
 
-<script>
-    // الروابط اللي بعتيها (اتأكدت إنها صحيحة)
-    const links = {
-        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyPb3Mc0FJmGcWONu5zLtN2Sb8a9etmmydAUc4qJT8-4KW1kb0g2HUJ8wRLdI40-921ajLZcoGR-VX/pub?output=csv",
-        "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
-    };
+    <script>
+        // الروابط اللي بعتيها
+        const LINKS = {
+            "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
+            "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
+        };
 
-    async function getStudentResult() {
-        const grade = document.getElementById('grade').value;
-        const seatInput = document.getElementById('seatNo').value.trim();
-        
-        if(!seatInput) { alert("من فضلك اكتب رقم الجلوس أولاً"); return; }
+        async function getStudentResult() {
+            const grade = document.getElementById('grade').value;
+            const seatNo = document.getElementById('seatNo').value;
+            const resultBox = document.getElementById('result');
+            const loader = document.getElementById('loader');
 
-        try {
-            const response = await fetch(links[grade]);
-            const csvText = await response.text();
-            
-            // تحويل الـ CSV لصفوف
-            const rows = csvText.split('\n').map(row => row.split(','));
-            const headers = rows[0];
-            
-            // البحث عن رقم الجلوس (بنشيل أي مسافات زيادة)
-            const student = rows.find(r => r[0].trim() === seatInput);
-
-            if(student) {
-                showData(headers, student, grade);
-            } else {
-                alert("عفواً، رقم الجلوس ده مش موجود في كشوف السنة دي.");
+            if (!seatNo) {
+                alert("يا بطل، اكتب رقم الجلوس الأول!");
+                return;
             }
-        } catch(err) {
-            alert("في مشكلة في الاتصال بالبيانات.. اتأكدي إنك فاتحة النت.");
+
+            resultBox.style.display = 'none';
+            loader.style.display = 'block';
+
+            try {
+                const response = await fetch(LINKS[grade]);
+                const csvData = await response.text();
+                
+                // تحويل البيانات من نص CSV إلى مصفوفة
+                const rows = csvData.split('\n').map(row => row.split(','));
+                
+                // البحث (رقم الجلوس في العمود الأول)
+                const student = rows.find(r => r[0].trim() === seatNo.trim());
+
+                loader.style.display = 'none';
+
+                if (student) {
+                    resultBox.style.display = 'block';
+                    resultBox.innerHTML = `
+                        <h3 style="color:var(--orange-dark); margin-top:0;">🎉 ألف مبروك النجاح</h3>
+                        <p><b>الاسم:</b> ${student[1] || 'غير متوفر'}</p>
+                        <p><b>رقم الجلوس:</b> ${student[0]}</p>
+                        <hr style="border:0; border-top:1px solid #eee;">
+                        <p style="font-size:1.2rem;"><b>المجموع الكلي:</b> <span style="color:var(--orange-main)">${student[student.length - 1]}</span></p>
+                        <button onclick="window.print()" style="font-size:14px; padding:8px; background:#777;">طباعة النتيجة</button>
+                    `;
+                } else {
+                    alert("رقم الجلوس ده مش موجود في كشوف سنة " + (grade == "1" ? "أولى" : "تانية"));
+                }
+            } catch (error) {
+                loader.style.display = 'none';
+                alert("حصل مشكلة في التحميل، تأكد إن النت شغال!");
+                console.error(error);
+            }
         }
-    }
-
-    function showData(headers, data, g) {
-        document.getElementById('studentName').innerText = data[1]; // الاسم
-        document.getElementById('studentStatus').innerText = (g == "1" ? "الصف الأول الثانوي" : "الصف الثاني الثانوي");
-        
-        const table = document.getElementById('resultTable');
-        table.innerHTML = "";
-
-        // عرض المواد والدرجات (من العمود التالت للأخر)
-        for(let i=2; i < headers.length; i++) {
-            if(!headers[i] || headers[i].trim() === "") continue;
-            
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="subject">${headers[i]}</td>
-                <td class="degree">${data[i]}</td>
-            `;
-            table.appendChild(tr);
-        }
-        document.getElementById('resultView').style.display = 'block';
-    }
-</script>
-
+    </script>
 </body>
 </html>
