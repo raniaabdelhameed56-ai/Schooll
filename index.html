@@ -6,128 +6,81 @@
     <title>بوابة نتائج مدرسة الحصايا الثانوية</title>
     <style>
         :root {
-            --primary-orange: #d37d3d;
-            --soft-beige: #f4eee1;
-            --white-glass: rgba(255, 255, 255, 0.9);
+            --primary: #d37d3d; /* البرتقالي اللي في الصورة */
+            --bg-color: #f4eee1; /* البيج الهادئ */
+            --white: rgba(255, 255, 255, 0.95);
         }
 
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--soft-beige);
-            /* إضافة تموجات خلفية مثل الصورة */
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(211, 125, 61, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(211, 125, 61, 0.1) 0%, transparent 40%);
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 20% 20%, rgba(211, 125, 61, 0.05) 0%, transparent 50%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* حاوية التصميم الرئيسية */
         .main-card {
-            background: var(--white-glass);
-            border: 2px solid #e2d9c5;
-            border-radius: 25px;
+            background: var(--white);
             padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
             width: 90%;
-            max-width: 550px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            max-width: 500px;
             text-align: center;
-            position: relative;
+            border: 1px solid #e2d9c5;
         }
 
-        .school-header {
-            color: #5d4037;
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+        h1 { color: #5d4037; font-size: 1.8rem; margin-bottom: 5px; }
+        p.subtitle { color: var(--primary); font-weight: bold; margin-bottom: 30px; }
 
-        .year-label {
-            color: var(--primary-orange);
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .search-area {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid #eee;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #8d6e63;
-            font-weight: bold;
-        }
+        .input-group { text-align: right; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #8d6e63; }
 
         select, input {
             width: 100%;
             padding: 14px;
             border: 1.5px solid #d1c4b2;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             outline: none;
             box-sizing: border-box;
-            background-color: #fafafa;
+            background: #fffcf9;
         }
 
         .btn-search {
-            background-color: var(--primary-orange);
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 40px;
             border-radius: 12px;
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(211, 125, 61, 0.3);
+            box-shadow: 0 4px 15px rgba(211, 125, 61, 0.2);
         }
 
-        .btn-search:hover {
-            background-color: #b96a32;
-            transform: translateY(-2px);
-        }
+        .btn-search:hover { background-color: #b96a32; transform: translateY(-2px); }
 
-        /* جدول النتائج */
-        #resultView {
-            display: none;
-            margin-top: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .student-header {
+        /* منطقة النتيجة */
+        #resultView { display: none; margin-top: 30px; animation: fadeIn 0.5s ease; }
+        .student-name-card {
             background: #fdfaf3;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
+            border-right: 5px solid var(--primary);
             margin-bottom: 15px;
-            border-right: 5px solid var(--primary-orange);
             text-align: right;
+            font-weight: bold;
+            color: #3e2723;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        th { background: #efebe9; padding: 12px; color: #5d4037; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
         td { padding: 12px; border-bottom: 1px solid #f5f5f5; text-align: center; }
+        .subject-name { text-align: right; font-weight: 600; color: #5d4037; }
+        .score { color: var(--primary); font-weight: bold; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -135,28 +88,26 @@
 <body>
 
 <div class="main-card">
-    <div class="school-header">مدرسة الحصايا الثانوية المشتركة</div>
-    <div class="year-label">نتائج امتحانات العام الدراسي 2026</div>
+    <h1>مدرسة الحصايا الثانوية المشتركة</h1>
+    <p class="subtitle">بوابة نتائج الطلاب 2026</p>
 
-    <div class="search-area">
-        <div class="input-group">
-            <label>السنة الدراسية</label>
-            <select id="grade">
-                <option value="1">الصف الأول الثانوي</option>
-                <option value="2">الصف الثاني الثانوي</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>رقم الجلوس</label>
-            <input type="text" id="seatNo" placeholder="ادخل رقم جلوس الطالب">
-        </div>
-        <button class="btn-search" onclick="loadResult()">عرض النتيجة</button>
+    <div class="input-group">
+        <label>اختر الصف:</label>
+        <select id="grade">
+            <option value="1">الصف الأول الثانوي</option>
+            <option value="2">الصف الثاني الثانوي</option>
+        </select>
     </div>
 
+    <div class="input-group">
+        <label>رقم الجلوس:</label>
+        <input type="text" id="seatNo" placeholder="ادخل رقم الجلوس هنا...">
+    </div>
+
+    <button class="btn-search" onclick="fetchStudentResult()">عرض النتيجة ✨</button>
+
     <div id="resultView">
-        <div class="student-header">
-            <div id="stName" style="font-weight: bold; font-size: 1.1rem; color: #3e2723;"></div>
-        </div>
+        <div class="student-name-card" id="stName"></div>
         <table>
             <tbody id="stTable"></tbody>
         </table>
@@ -164,26 +115,53 @@
 </div>
 
 <script>
-    // الروابط الصحيحة التي أرسلتها
-    const sources = {
-        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyPb3Mc0FJmGcWONu5zLtN2Sb8a9etmmydAUc4qJT8-4KW1kb0g2HUJ8wRLdI40-921ajLZcoGR-VX/pub?output=csv",
+    const apiUrls = {
+        "1": "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJPLHZ-MIktvCWtTnuLxdH7DRCLrDsMfQtgoB-X-tdWYLetDPRw-Y4AhrqTIJViA/pub?output=csv",
         "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
     };
 
-    async function loadResult() {
+    async function fetchStudentResult() {
         const grade = document.getElementById('grade').value;
-        const seatInput = document.getElementById('seatNo').value.trim();
+        const seatNo = document.getElementById('seatNo').value.trim();
         
-        if(!seatInput) { alert("يرجى إدخال رقم الجلوس"); return; }
+        if(!seatNo) { alert("من فضلك اكتب رقم الجلوس"); return; }
 
         try {
-            const resp = await fetch(sources[grade]);
-            const csv = await resp.text();
-            const rows = csv.split('\n').map(r => r.split(','));
+            const response = await fetch(apiUrls[grade]);
+            const data = await response.text();
+            
+            // تحويل الـ CSV لمصفوفة بذكاء
+            const rows = data.split('\n').map(r => r.split(','));
             const headers = rows[0];
-            const student = rows.find(r => r[0].trim() === seatInput);
+            
+            // البحث عن الطالب في أول عمود
+            const student = rows.find(r => r[0].trim() === seatNo);
 
             if(student) {
                 document.getElementById('stName').innerText = "الاسم: " + student[1];
                 const tableBody = document.getElementById('stTable');
-                tableBody.innerHTML
+                tableBody.innerHTML = "";
+
+                // إضافة المواد والدرجات أوتوماتيكياً
+                for(let i=2; i < headers.length; i++) {
+                    if(!headers[i] || headers[i].trim() === "") continue;
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="subject-name">${headers[i]}</td>
+                        <td class="score">${student[i]}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+                document.getElementById('resultView').style.display = 'block';
+            } else {
+                alert("رقم الجلوس غير موجود، تأكد من الرقم والسنة الدراسية.");
+                document.getElementById('resultView').style.display = 'none';
+            }
+        } catch(error) {
+            alert("حدث خطأ في جلب البيانات، يرجى المحاولة لاحقاً.");
+        }
+    }
+</script>
+
+</body>
+</html>
