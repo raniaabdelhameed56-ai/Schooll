@@ -148,4 +148,51 @@
     // الروابط الصحيحة اللي بعتيها
     const dataSources = {
         grade1: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyPb3Mc0FJmGcWONu5zLtN2Sb8a9etmmydAUc4qJT8-4KW1kb0g2HUJ8wRLdI40-921ajLZcoGR-VX/pub?output=csv",
-        grade2: "
+        grade2: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
+    };
+
+    async function findResult() {
+        const grade = document.getElementById('gradeSelect').value;
+        const seatInput = document.getElementById('seatNo').value.trim();
+        
+        if(!seatInput) { alert("أدخل رقم الجلوس أولاً"); return; }
+
+        try {
+            const resp = await fetch(dataSources[grade]);
+            const text = await resp.text();
+            const rows = text.split('\n').map(r => r.split(','));
+            const headers = rows[0];
+            const student = rows.find(r => r[0].trim() === seatInput);
+
+            if(student) {
+                renderUI(headers, student, grade);
+            } else {
+                alert("رقم الجلوس غير موجود");
+            }
+        } catch(e) {
+            alert("خطأ في الاتصال بالبيانات");
+        }
+    }
+
+    function renderUI(headers, student, g) {
+        document.getElementById('stName').innerText = student[1];
+        document.getElementById('stYear').innerText = (g === 'grade1' ? "الصف الأول الثانوي" : "الصف الثاني الثانوي");
+        
+        const body = document.getElementById('resTableBody');
+        body.innerHTML = "";
+
+        for(let i=2; i < headers.length; i++) {
+            if(!headers[i] || headers[i].trim() === "") continue;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="text-align: right; color: #555;">${headers[i]}</td>
+                <td style="text-align: left;" class="score">${student[i]}</td>
+            `;
+            body.appendChild(tr);
+        }
+        document.getElementById('resultContainer').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
