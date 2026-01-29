@@ -3,86 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة مدرسة الحصايا الثانوية</title>
+    <title>مدرسة الحصايا - Rania Abdelhamid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* إضافة خلفية مليانة رسومات تعليمية */
+        :root {
+            --primary: #d37d3d;
+            --beige: #f4eee1;
+            --dark: #5d4037;
+        }
+
         body {
             margin: 0;
-            font-family: 'Cairo', 'Segoe UI', sans-serif;
-            background-color: #f4eee1;
-            /* رسومات "باترن" تعليمية خفيفة */
-            background-image: url('https://www.transparenttextures.com/patterns/school-paper.png');
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--beige);
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
-        /* حركات برتقالية عائمة في الخلفية */
-        body::before {
-            content: "";
-            position: absolute; width: 300px; height: 300px;
-            background: rgba(211, 125, 61, 0.1);
-            filter: blur(80px); border-radius: 50%;
-            top: -50px; left: -50px; animation: move 10s infinite alternate;
+        /* رسومات تعليمية متحركة في الخلفية */
+        .bg-elements {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+        .edu-icon {
+            position: absolute; opacity: 0.15; fill: var(--primary);
+            animation: float 15s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
         }
 
-        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
+        /* العلامة المائية بالإنجليزية */
+        .watermark {
+            position: fixed; bottom: 20px; left: 20px;
+            font-family: 'Arial', sans-serif; font-weight: bold;
+            font-size: 1.2rem; color: rgba(93, 64, 55, 0.3);
+            z-index: 1000; pointer-events: none;
+            letter-spacing: 1px;
+        }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 35px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px; border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.1);
             width: 90%; max-width: 500px;
-            text-align: center;
-            border: 5px solid #fff;
-            position: relative;
-            z-index: 10;
-            animation: fadeIn 0.8s ease-out;
+            border: 8px solid #fff;
+            position: relative; z-index: 10;
+            animation: slideUp 0.8s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .admin-header {
+            display: flex; justify-content: space-around;
+            font-size: 0.75rem; color: var(--dark);
+            border-bottom: 2px solid var(--beige);
+            padding-bottom: 15px; margin-bottom: 20px; text-align: center;
+        }
+        .admin-header div b { color: var(--primary); display: block; font-size: 0.85rem; }
 
-        .school-title { color: #5d4037; font-size: 1.8rem; font-weight: 900; margin: 0; }
-        .badge { background: #d37d3d; color: white; padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; display: inline-block; margin: 10px 0 25px; }
+        .header h1 { font-size: 1.6rem; color: var(--dark); margin: 0; text-align: center; }
+        .year-badge { 
+            background: var(--primary); color: white; padding: 3px 15px; 
+            border-radius: 50px; font-size: 0.8rem; display: block; 
+            width: fit-content; margin: 10px auto 20px;
+        }
 
-        .search-box { background: #fffcf5; padding: 25px; border-radius: 25px; border: 1px solid #e2d9c5; }
-        
-        label { display: block; text-align: right; margin-bottom: 10px; font-weight: bold; color: #8d6e63; }
-        
+        .search-box { background: #fffcf7; padding: 25px; border-radius: 25px; border: 1.5px solid #e2d9c5; }
+        label { display: block; text-align: right; margin-bottom: 5px; font-weight: bold; color: #8d6e63; }
         select, input {
-            width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #d1c4b2;
-            border-radius: 15px; font-size: 16px; outline: none; transition: 0.3s;
+            width: 100%; padding: 14px; margin-bottom: 15px; border: 2px solid #d1c4b2;
+            border-radius: 12px; font-size: 16px; outline: none; box-sizing: border-box;
         }
-        input:focus { border-color: #d37d3d; background: #fff; }
 
         .btn-search {
-            width: 100%; padding: 18px; background: #d37d3d; color: white; border: none;
-            border-radius: 15px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(211, 125, 61, 0.3); transition: 0.3s;
+            width: 100%; padding: 16px; background: var(--primary); color: white; border: none;
+            border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            transition: 0.4s; box-shadow: 0 10px 20px rgba(211, 125, 61, 0.2);
         }
-        .btn-search:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(211, 125, 61, 0.4); }
+        .btn-search:hover { transform: scale(1.02); background: #b96a32; }
 
-        /* النتيجة */
-        #resultView { display: none; margin-top: 30px; animation: slideUp 0.5s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        #resultArea { display: none; margin-top: 25px; animation: fadeIn 0.5s ease; }
+        .st-name-card { background: var(--beige); padding: 12px; border-radius: 12px; border-right: 6px solid var(--primary); text-align: right; margin-bottom: 15px; font-weight: 900; }
+        table { width: 100%; border-collapse: collapse; }
+        td { background: white; padding: 12px; border-bottom: 1px solid #eee; text-align: right; }
+        .subject { font-weight: bold; color: var(--dark); }
+        .score { color: var(--primary); font-weight: 900; text-align: left; }
 
-        .student-info { background: #fdfaf3; padding: 15px; border-radius: 15px; border-right: 6px solid #d37d3d; text-align: right; margin-bottom: 15px; }
+        .credit { margin-top: 25px; text-align: center; font-size: 0.85rem; color: #8d6e63; border-top: 1px dashed #d1c4b2; padding-top: 15px; }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        td { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        .sub { font-weight: bold; text-align: right; color: #5d4037; }
-        .val { color: #d37d3d; font-weight: 900; text-align: left; }
-
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+<div class="bg-elements">
+    <svg class="edu-icon" style="left:10%; animation-delay:0s;" width="50" height="50" viewBox="0 0 24 24"><path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg>
+    <svg class="edu-icon" style="left:30%; animation-delay:5s;" width="40" height="40" viewBox="0 0 24 24"><path d="M18,3H6V5H18V3M18,19H6V21H18V19M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z"/></svg>
+    <svg class="edu-icon" style="left:60%; animation-delay:2s;" width="45" height="45" viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/></svg>
+    <svg class="edu-icon" style="left:85%; animation-delay:8s;" width="55" height="55" viewBox="0 0 24 24"><path d="M12,2D11,2 9.03,3.57 7.03,6.23L6.11,7.46C4.19,10.03 3,12.85 3,16C3,19.31 5.69,22 9,22C12.31,22 15,19.31 15,16C15,12.85 13.81,10.03 11.89,7.46L10.97,6.23C8.97,3.57 7,2 6,2M6,4C6.5,4 7.5,5 9,7C10.5,9 12,12 12,15C12,17.21 10.21,19 8,19C5.79,19 4,17.21 4,15C4,12 5.5,9 7,7C8.5,5 9.5,4 10,4Z"/></svg>
+</div>
+
+<div class="watermark">Rania Abdelhamid Badry</div>
+
 <div class="main-card">
-    <div style="font-size: 40px;">🎓</div>
-    <h1 class="school-title">مدرسة الحصايا الثانوية</h1>
-    <span class="badge">نظام النتائج الإلكتروني 2026</span>
+    <div class="admin-header">
+        <div>مدير المدرسة<b>أ/ عبد الحميد بدري قاسم</b></div>
+        <div>وكيل المدرسة<b>أ/ ياسر محمد المهدي</b></div>
+        <div>رئيس الكنترول<b>أ/ هيام عبد الرحيم</b></div>
+    </div>
+
+    <div class="header">
+        <h1>مدرسة الحصايا الثانوية المشتركة</h1>
+        <span class="year-badge">نتائج الطلاب 2026</span>
+    </div>
 
     <div class="search-box">
         <label>الصف الدراسي:</label>
@@ -90,18 +126,18 @@
             <option value="1">الصف الأول الثانوي</option>
             <option value="2">الصف الثاني الثانوي</option>
         </select>
-
         <label>رقم الجلوس:</label>
-        <input type="number" id="seatNo" placeholder="اكتب رقم الجلوس هنا...">
-        
-        <button class="btn-search" onclick="fetchResult()">إظهار النتيجة ✨</button>
+        <input type="number" id="seatNo" placeholder="أدخل رقم الجلوس">
+        <button class="btn-search" onclick="showResult()">كشف النتيجة ✨</button>
     </div>
 
-    <div id="resultView">
-        <div class="student-info" id="studentName"></div>
-        <table>
-            <tbody id="resultTable"></tbody>
-        </table>
+    <div id="resultArea">
+        <div class="st-name-card" id="stName"></div>
+        <table><tbody id="resTable"></tbody></table>
+    </div>
+
+    <div class="credit">
+        تم التصميم بواسطة: <b>Rania Abdelhamid Badry</b>
     </div>
 </div>
 
@@ -111,33 +147,29 @@
         "2": "https://docs.google.com/spreadsheets/d/e/2PACX-1vT4Ngahq-48563jJP3X7ZW76339e1KuIh8s2TJz6-P11CNKb720IY242DLNbEbQ2g/pub?output=csv"
     };
 
-    async function fetchResult() {
+    async function showResult() {
         const grade = document.getElementById('grade').value;
         const seat = document.getElementById('seatNo').value.trim();
         if(!seat) { alert("من فضلك ادخل رقم الجلوس"); return; }
-
         try {
-            const r = await fetch(links[grade]);
-            const t = await r.text();
-            const rows = t.split('\n').map(row => row.split(','));
+            const response = await fetch(links[grade]);
+            const text = await response.text();
+            const rows = text.split('\n').map(r => r.split(','));
             const headers = rows[0];
-            const data = rows.find(row => row[0].trim() === seat);
-
-            if(data) {
-                document.getElementById('studentName').innerText = "الاسم: " + data[1];
-                const table = document.getElementById('resultTable');
+            const student = rows.find(r => r[0].trim() === seat);
+            if(student) {
+                document.getElementById('stName').innerText = "الاسم: " + student[1];
+                const table = document.getElementById('resTable');
                 table.innerHTML = "";
-                for(let i=2; i<headers.length; i++) {
+                for(let i=2; i < headers.length; i++) {
                     if(!headers[i] || headers[i].trim() === "") continue;
-                    table.innerHTML += `<tr><td class="sub">${headers[i]}</td><td class="val">${data[i]}</td></tr>`;
+                    table.innerHTML += `<tr><td class="subject">${headers[i]}</td><td class="score">${student[i]}</td></tr>`;
                 }
-                document.getElementById('resultView').style.display = 'block';
-            } else {
-                alert("الرقم ده مش موجود!");
-            }
-        } catch(e) { alert("مشكلة في التحميل!"); }
+                document.getElementById('resultArea').style.display = 'block';
+            } else { alert("رقم الجلوس غير موجود!"); }
+        } catch(e) { alert("خطأ في الاتصال بالبيانات"); }
     }
 </script>
 
 </body>
-</html>
+    </html>
